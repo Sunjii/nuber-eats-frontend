@@ -5,4 +5,8 @@
   @apply bg-gray-200 shadow-inner focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50 mb-3 py-3 px-4 rounded-3xl;
 }
 
+.btn {
+  @apply px-5 py-3 bg-gray-800 text-white text-lg rounded-xl hover:opacity-80;
+}
+
 @tailwind utilities;
