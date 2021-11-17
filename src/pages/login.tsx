@@ -21,6 +21,7 @@ const LOGIN_MUTATION = gql`
 interface ILoginForm {
   email: string;
   password: string;
+  resultError?: string;
 }
 
 export const Login = () => {
@@ -41,10 +42,10 @@ export const Login = () => {
   };
 
   // login mutation
-  const [loginMutation, { data: loginMutationResult, loading }] = useMutation<
+  const [
     loginMutation,
-    loginMutationVariables
-  >(LOGIN_MUTATION, {
+    { data: loginMutationResult, loading, error: loginMutationError },
+  ] = useMutation<loginMutation, loginMutationVariables>(LOGIN_MUTATION, {
     onCompleted: () => null,
   });
   const onSubmit = () => {
@@ -106,6 +107,9 @@ export const Login = () => {
           </button>
           {loginMutationResult?.login.error && (
             <FormError errorMessage={loginMutationResult.login.error} />
+          )}
+          {loginMutationError?.message && (
+            <FormError errorMessage={loginMutationError.message} />
           )}
         </form>
       </div>
