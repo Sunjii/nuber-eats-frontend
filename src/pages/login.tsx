@@ -1,5 +1,4 @@
-import { ApolloError, useMutation } from "@apollo/client";
-import { watch } from "fs";
+import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -34,7 +33,7 @@ export const Login = () => {
 
   const onCompleted = (data: loginMutation) => {
     const {
-      login: { error, ok, token },
+      login: { ok, token },
     } = data;
     if (ok) {
       console.log(token);
@@ -42,22 +41,24 @@ export const Login = () => {
   };
 
   // login mutation
-  const [loginMutation, { data: loginMutationResult }] = useMutation<
+  const [loginMutation, { data: loginMutationResult, loading }] = useMutation<
     loginMutation,
     loginMutationVariables
   >(LOGIN_MUTATION, {
     onCompleted: () => null,
   });
   const onSubmit = () => {
-    const { email, password } = getValues();
-    loginMutation({
-      variables: {
-        loginInput: {
-          email,
-          password,
+    if (!loading) {
+      const { email, password } = getValues();
+      loginMutation({
+        variables: {
+          loginInput: {
+            email,
+            password,
+          },
         },
-      },
-    });
+      });
+    }
   };
 
   return (
@@ -100,7 +101,9 @@ export const Login = () => {
               비밀번호는 8자 이상입니다.
             </span>
           )}
-          <button className="btn mt-3">Log In</button>
+          <button className="btn mt-3">
+            {loading ? "Loading..." : "Log In"}
+          </button>
           {loginMutationResult?.login.error && (
             <FormError errorMessage={loginMutationResult.login.error} />
           )}
