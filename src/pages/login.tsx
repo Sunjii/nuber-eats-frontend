@@ -7,6 +7,7 @@ import {
   loginMutation,
   loginMutationVariables,
 } from "../__generated__/loginMutation";
+import nuberLogo from "../images/eats-logo.svg";
 
 const LOGIN_MUTATION = gql`
   mutation loginMutation($loginInput: LoginInput!) {
@@ -63,12 +64,15 @@ export const Login = () => {
   };
 
   return (
-    <span className="h-screen flex items-center justify-center bg-gray-800">
-      <div className="bg-white w-full max-w-lg py-10 rounded-lg text-center pt-8 pb-7">
-        <h3 className="text-3xl text-gray-800 font-bold">Log In</h3>
+    <div className="h-screen flex items-center flex-col mt-10 lg:mt-40">
+      <div className="w-full max-w-screen-sm flex flex-col px-5 items-center">
+        <img src={nuberLogo} className="w-60 mb-5" />
+        <h4 className="w-full font-bold text-left text-3xl mb-10">
+          Welcome Back!
+        </h4>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="grid gap-3 mt-5 px-5"
+          className="grid gap-3 mt-5 w-full"
         >
           <input
             {...register("email", {
@@ -76,7 +80,7 @@ export const Login = () => {
             })}
             required
             name="email"
-            placeholder="email"
+            placeholder="Email"
             className="input mb-3"
           />
           {errors.email?.message && (
@@ -91,7 +95,7 @@ export const Login = () => {
             required
             name="password"
             type="password"
-            placeholder="password"
+            placeholder="Password"
             className="input"
           />
           {errors.password?.message && (
@@ -102,9 +106,7 @@ export const Login = () => {
               비밀번호는 8자 이상입니다.
             </span>
           )}
-          <button className="btn mt-3">
-            {loading ? "Loading..." : "Log In"}
-          </button>
+          <button className="btn">{loading ? "Loading..." : "Log In"}</button>
           {loginMutationResult?.login.error && (
             <FormError errorMessage={loginMutationResult.login.error} />
           )}
@@ -113,6 +115,6 @@ export const Login = () => {
           )}
         </form>
       </div>
-    </span>
+    </div>
   );
 };
