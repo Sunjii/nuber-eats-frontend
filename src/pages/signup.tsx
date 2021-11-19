@@ -2,13 +2,17 @@ import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import Helmet from "react-helmet";
 import React from "react";
-import { useForm, useFormState } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { FormError } from "../components/form-error";
 
 import nuberLogo from "../images/eats-logo.svg";
 import { Button } from "../components/button";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { UserRole } from "../__generated__/globalTypes";
+import {
+  createAccountMutation,
+  createAccountMutationVariables,
+} from "../__generated__/createAccountMutation";
 
 const CREATE_ACCOUNT_MUTATION = gql`
   mutation createAccountMutation($createAccountInput: CreateAccountInput!) {
@@ -40,13 +44,44 @@ export const Signup = () => {
     },
   });
 
-  // login mutation
-  const [createAccountMutation] = useMutation(CREATE_ACCOUNT_MUTATION, {});
+  const history = useHistory();
 
-  const onSubmit = () => {};
+  // create account mutation
+  const onCompleted = (data: createAccountMutation) => {
+    const {
+      createAccount: { ok, error },
+    } = data;
+    if (ok) {
+      // redirect to login page
+      history.push("/login");
+    }
+  };
+
+  const [
+    createAccountMutation,
+    { loading, data: createAccountMutationResult },
+  ] = useMutation<createAccountMutation, createAccountMutationVariables>(
+    CREATE_ACCOUNT_MUTATION,
+    { onCompleted }
+  );
+
+  const onSubmit = () => {
+    if (!loading) {
+      const { email, password, role } = getValues();
+      createAccountMutation({
+        variables: {
+          createAccountInput: {
+            email,
+            password,
+            role,
+          },
+        },
+      });
+    }
+  };
 
   // watch
-  console.log(watch());
+  //console.log(watch());
 
   return (
     <div className="h-screen flex items-center flex-col mt-10 lg:mt-40">
@@ -108,9 +143,14 @@ export const Signup = () => {
           </select>
           <Button
             canClick={isValid}
-            loading={false}
+            loading={loading}
             actionText={"Create Account"}
           ></Button>
+          {createAccountMutationResult?.createAccount.error && (
+            <FormError
+              errorMessage={createAccountMutationResult.createAccount.error}
+            />
+          )}
         </form>
         <div>
           Already have an account?{" "}
