@@ -8,6 +8,7 @@ import { FormError } from "../components/form-error";
 import nuberLogo from "../images/eats-logo.svg";
 import { Button } from "../components/button";
 import { Link } from "react-router-dom";
+import { UserRole } from "../__generated__/globalTypes";
 
 const CREATE_ACCOUNT_MUTATION = gql`
   mutation createAccountMutation($createAccountInput: CreateAccountInput!) {
@@ -18,26 +19,34 @@ const CREATE_ACCOUNT_MUTATION = gql`
   }
 `;
 
-interface ILoginForm {
+interface ICreateAccountForm {
   email: string;
   password: string;
   resultError?: string;
+  role: UserRole;
 }
 
 export const Signup = () => {
   const {
     register,
     getValues,
+    watch,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<ILoginForm>({
+  } = useForm<ICreateAccountForm>({
     mode: "onChange",
+    defaultValues: {
+      role: UserRole.Client,
+    },
   });
 
   // login mutation
   const [createAccountMutation] = useMutation(CREATE_ACCOUNT_MUTATION, {});
 
   const onSubmit = () => {};
+
+  // watch
+  console.log(watch());
 
   return (
     <div className="h-screen flex items-center flex-col mt-10 lg:mt-40">
@@ -65,7 +74,6 @@ export const Signup = () => {
           {errors.email?.message && (
             <FormError errorMessage={errors.email?.message} />
           )}
-          {console.log(errors.email?.message)}
           <input
             {...register("password", {
               required: "Password is required.",
@@ -85,6 +93,14 @@ export const Signup = () => {
               비밀번호는 8자 이상입니다.
             </span>
           )}
+          <select
+            {...register("role", { required: "Please select the role" })}
+            className="input"
+          >
+            {Object.keys(UserRole).map((role, index) => (
+              <option key={index}>{role}</option>
+            ))}
+          </select>
           <Button
             canClick={isValid}
             loading={false}
