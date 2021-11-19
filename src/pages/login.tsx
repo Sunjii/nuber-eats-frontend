@@ -89,6 +89,11 @@ export const Login = () => {
           <input
             {...register("email", {
               required: "Email is required.",
+              pattern: {
+                value:
+                  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                message: "올바른 이메일을 입력하세요",
+              },
             })}
             required
             name="email"
@@ -98,7 +103,6 @@ export const Login = () => {
           {errors.email?.message && (
             <FormError errorMessage={errors.email?.message} />
           )}
-          {console.log(errors.email?.message)}
           <input
             {...register("password", {
               required: "Password is required.",
