@@ -1,5 +1,5 @@
 import React from "react";
 
 export const Signup = () => {
-  return <span>Signup</span>;
+  return <span>let's create account</span>;
 };
