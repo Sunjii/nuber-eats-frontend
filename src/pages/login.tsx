@@ -9,6 +9,7 @@ import {
 } from "../__generated__/loginMutation";
 import nuberLogo from "../images/eats-logo.svg";
 import { Button } from "../components/button";
+import { Link } from "react-router-dom";
 
 const LOGIN_MUTATION = gql`
   mutation loginMutation($loginInput: LoginInput!) {
@@ -32,7 +33,9 @@ export const Login = () => {
     getValues,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<ILoginForm>();
+  } = useForm<ILoginForm>({
+    mode: "onChange",
+  });
 
   const onCompleted = (data: loginMutation) => {
     const {
@@ -77,7 +80,7 @@ export const Login = () => {
         </h4>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="grid gap-3 mt-5 w-full"
+          className="grid gap-3 mb-5 mt-5 w-full"
         >
           <input
             {...register("email", {
@@ -85,13 +88,13 @@ export const Login = () => {
             })}
             required
             name="email"
-            type="email"
             placeholder="Email"
             className="input mb-3"
           />
           {errors.email?.message && (
             <FormError errorMessage={errors.email?.message} />
           )}
+          {console.log(errors.email?.message)}
           <input
             {...register("password", {
               required: "Password is required.",
@@ -123,6 +126,12 @@ export const Login = () => {
             <FormError errorMessage={loginMutationError.message} />
           )}
         </form>
+        <div>
+          New to Nuber?{" "}
+          <Link to="/create-account" className="text-lime-600 hover:underline">
+            Create an Account!
+          </Link>
+        </div>
       </div>
     </div>
   );
