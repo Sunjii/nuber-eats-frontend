@@ -1,5 +1,6 @@
 import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
+import Helmet from "react-helmet";
 import React from "react";
 import { useForm, useFormState } from "react-hook-form";
 import { FormError } from "../components/form-error";
@@ -51,7 +52,7 @@ export const Login = () => {
     loginMutation,
     { data: loginMutationResult, loading, error: loginMutationError },
   ] = useMutation<loginMutation, loginMutationVariables>(LOGIN_MUTATION, {
-    onCompleted: () => null,
+    onCompleted,
   });
 
   const onSubmit = () => {
@@ -73,6 +74,9 @@ export const Login = () => {
 
   return (
     <div className="h-screen flex items-center flex-col mt-10 lg:mt-40">
+      <Helmet>
+        <title>Login | Nuber Eats</title>
+      </Helmet>
       <div className="w-full max-w-screen-sm flex flex-col px-5 items-center">
         <img src={nuberLogo} className="w-60 mb-5" />
         <h4 className="w-full font-bold text-left text-3xl mb-10">
