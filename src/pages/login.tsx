@@ -1,13 +1,14 @@
 import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useFormState } from "react-hook-form";
 import { FormError } from "../components/form-error";
 import {
   loginMutation,
   loginMutationVariables,
 } from "../__generated__/loginMutation";
 import nuberLogo from "../images/eats-logo.svg";
+import { Button } from "../components/button";
 
 const LOGIN_MUTATION = gql`
   mutation loginMutation($loginInput: LoginInput!) {
@@ -30,7 +31,7 @@ export const Login = () => {
     register,
     getValues,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<ILoginForm>();
 
   const onCompleted = (data: loginMutation) => {
@@ -49,9 +50,13 @@ export const Login = () => {
   ] = useMutation<loginMutation, loginMutationVariables>(LOGIN_MUTATION, {
     onCompleted: () => null,
   });
+
   const onSubmit = () => {
     if (!loading) {
       const { email, password } = getValues();
+
+      // if(email){}
+
       loginMutation({
         variables: {
           loginInput: {
@@ -80,13 +85,13 @@ export const Login = () => {
             })}
             required
             name="email"
+            type="email"
             placeholder="Email"
             className="input mb-3"
           />
           {errors.email?.message && (
             <FormError errorMessage={errors.email?.message} />
           )}
-
           <input
             {...register("password", {
               required: "Password is required.",
@@ -106,7 +111,11 @@ export const Login = () => {
               비밀번호는 8자 이상입니다.
             </span>
           )}
-          <button className="btn">{loading ? "Loading..." : "Log In"}</button>
+          <Button
+            canClick={isValid}
+            loading={loading}
+            actionText={"Log In"}
+          ></Button>
           {loginMutationResult?.login.error && (
             <FormError errorMessage={loginMutationResult.login.error} />
           )}
