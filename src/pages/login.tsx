@@ -11,7 +11,8 @@ import {
 import nuberLogo from "../images/eats-logo.svg";
 import { Button } from "../components/button";
 import { Link } from "react-router-dom";
-import { isLoggedInVar } from "../apollo";
+import { authToken, isLoggedInVar } from "../apollo";
+import { LOCALSTORAGE_TOKEN } from "../constants";
 
 const LOGIN_MUTATION = gql`
   mutation loginMutation($loginInput: LoginInput!) {
@@ -43,8 +44,10 @@ export const Login = () => {
     const {
       login: { ok, token },
     } = data;
-    if (ok) {
-      // console.log(token);
+    if (ok && token) {
+      // saving token
+      localStorage.setItem(LOCALSTORAGE_TOKEN, token);
+      authToken(token);
       // login!
       isLoggedInVar(true);
     }
