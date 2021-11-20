@@ -17,7 +17,7 @@ const httpLink = createHttpLink({
 });
 const authLink = setContext((_, { headers }) => {
   // get the authentication toke from local
-  console.log(headers);
+  // console.log(headers);
   // return the headers to the context so httpLink can read them
   return {
     headers: {
