@@ -32,7 +32,15 @@ export const LoggedInRouter = () => {
     <div>
       <h1>You are Logged In!</h1>
       <h2>{data.me.email}</h2>
-      <button onClick={() => isLoggedInVar(false)}>Log out</button>
+      <button
+        onClick={() => {
+          isLoggedInVar(false);
+          // clear localstorage
+          localStorage.clear();
+        }}
+      >
+        Log out
+      </button>
     </div>
   );
 };
