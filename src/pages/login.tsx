@@ -44,7 +44,7 @@ export const Login = () => {
       login: { ok, token },
     } = data;
     if (ok) {
-      console.log(token);
+      // console.log(token);
       // login!
       isLoggedInVar(true);
     }
