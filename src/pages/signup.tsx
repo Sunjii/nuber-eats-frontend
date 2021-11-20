@@ -52,7 +52,7 @@ export const Signup = () => {
     if (ok) {
       // redirect to login page
       alert("계정 생성 완료!");
-      history.push("/login");
+      history.push("/");
     }
   };
 
@@ -88,7 +88,7 @@ export const Signup = () => {
         <title>Sign Up | Nuber Eats</title>
       </Helmet>
       <div className="w-full max-w-screen-sm flex flex-col px-5 items-center">
-        <img src={nuberLogo} className="w-60 mb-5" />
+        <img src={nuberLogo} className="w-60 mb-5" alt="" />
         <h4 className="w-full font-bold text-left text-3xl mb-10">
           Let's Create Account!
         </h4>
@@ -153,7 +153,7 @@ export const Signup = () => {
         </form>
         <div>
           Already have an account?{" "}
-          <Link to="/login" className="text-lime-600 hover:underline">
+          <Link to="/" className="text-lime-600 hover:underline">
             Log in now.
           </Link>
         </div>

@@ -64,9 +64,6 @@ export const Login = () => {
   const onSubmit = () => {
     if (!loading) {
       const { email, password } = getValues();
-
-      // if(email){}
-
       loginMutation({
         variables: {
           loginInput: {
