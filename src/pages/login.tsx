@@ -84,7 +84,7 @@ export const Login = () => {
         <title>Login | Nuber Eats</title>
       </Helmet>
       <div className="w-full max-w-screen-sm flex flex-col px-5 items-center">
-        <img src={nuberLogo} className="w-60 mb-5" />
+        <img src={nuberLogo} className="w-60 mb-5" alt="" />
         <h4 className="w-full font-bold text-left text-3xl mb-10">
           Welcome Back!
         </h4>
