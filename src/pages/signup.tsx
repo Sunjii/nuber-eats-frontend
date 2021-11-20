@@ -53,6 +53,7 @@ export const Signup = () => {
     } = data;
     if (ok) {
       // redirect to login page
+      alert("계정 생성 완료!");
       history.push("/login");
     }
   };
