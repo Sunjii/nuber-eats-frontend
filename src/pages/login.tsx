@@ -1,8 +1,8 @@
 import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
-import Helmet from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import React from "react";
-import { useForm, useFormState } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { FormError } from "../components/form-error";
 import {
   loginMutation,

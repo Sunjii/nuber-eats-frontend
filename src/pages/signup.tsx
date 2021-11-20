@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
-import Helmet from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { FormError } from "../components/form-error";
@@ -34,7 +34,6 @@ export const Signup = () => {
   const {
     register,
     getValues,
-    watch,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<ICreateAccountForm>({
@@ -49,7 +48,7 @@ export const Signup = () => {
   // create account mutation
   const onCompleted = (data: createAccountMutation) => {
     const {
-      createAccount: { ok, error },
+      createAccount: { ok },
     } = data;
     if (ok) {
       // redirect to login page
