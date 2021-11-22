@@ -30,7 +30,7 @@ export const LoggedInRouter = () => {
   // main screen
   return (
     <Router>
-      <Header email={data.me.email} />
+      <Header />
       <Switch>
         {data.me.role === "Client" && ClientRoutes}
         <Redirect to="/" />
