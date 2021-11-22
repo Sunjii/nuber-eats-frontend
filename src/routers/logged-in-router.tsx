@@ -8,6 +8,8 @@ import {
   Redirect,
 } from "react-router-dom";
 import { isLoggedInVar } from "../apollo";
+import { Header } from "../components/header";
+import { NotFound } from "../pages/404";
 import { Restaurants } from "../pages/client/restaurants";
 import { meQuery } from "../__generated__/meQuery";
 
@@ -43,6 +45,7 @@ export const LoggedInRouter = () => {
   // main screen
   return (
     <Router>
+      <Header />
       <Switch>
         {data.me.role === "Client" && ClientRoutes}
         <Redirect to="/" />
