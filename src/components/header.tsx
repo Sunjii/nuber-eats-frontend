@@ -1,11 +1,17 @@
 import React from "react";
 import nuberLogo from "../images/eats-logo.svg";
 
-export const Header = () => {
+interface IHeaderProps {
+  email: string;
+}
+
+export const Header: React.FC<IHeaderProps> = ({ email }) => {
   return (
     <header className=" py-4">
-      <img src={nuberLogo} className="w-40 mb-10" alt="" />
-      <div className="w-full max-w-screen-xl mx-auto">Im the header</div>
+      <div className="w-full max-w-screen-xl mx-auto flex justify-between items-center">
+        <img src={nuberLogo} className="w-40" alt="" />
+        <span className="text-xs">{email}</span>
+      </div>
     </header>
   );
 };
