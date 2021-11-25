@@ -26,36 +26,18 @@ interface IFormProps {
 
 export const EditProfile = () => {
   // get userData
-  const client = useApolloClient();
-  const { data: userData } = useMe();
-  const onCompleted = (data: editProfile) => {
+  const { data: userData, refetch } = useMe();
+  const onCompleted = async (data: editProfile) => {
     const {
       editProfile: { ok },
     } = data;
     if (ok && userData) {
       // update cache
-      const {
-        me: { email: prevEmail, id },
-      } = userData;
-      const { email: newEmail } = getValues();
-      if (prevEmail !== newEmail) {
-        // change the email
-        client.writeFragment({
-          id: `User:${id}`,
-          fragment: gql`
-            fragment EditedUser on User {
-              verified
-              email
-            }
-          `,
-          data: {
-            email: newEmail,
-            verified: false,
-          },
-        });
-      }
+      // back-end 에서 API를 기다리지 않고 즉시 업데이트
+      await refetch();
     }
   };
+
   const {
     register,
     handleSubmit,
