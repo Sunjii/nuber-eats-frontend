@@ -1,4 +1,4 @@
-import { useMutation } from "@apollo/client";
+import { useApolloClient, useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -26,13 +26,34 @@ interface IFormProps {
 
 export const EditProfile = () => {
   // get userData
+  const client = useApolloClient();
   const { data: userData } = useMe();
   const onCompleted = (data: editProfile) => {
     const {
       editProfile: { ok },
     } = data;
-    if (ok) {
+    if (ok && userData) {
       // update cache
+      const {
+        me: { email: prevEmail, id },
+      } = userData;
+      const { email: newEmail } = getValues();
+      if (prevEmail !== newEmail) {
+        // change the email
+        client.writeFragment({
+          id: `User:${id}`,
+          fragment: gql`
+            fragment EditedUser on User {
+              verified
+              email
+            }
+          `,
+          data: {
+            email: newEmail,
+            verified: false,
+          },
+        });
+      }
     }
   };
   const {
