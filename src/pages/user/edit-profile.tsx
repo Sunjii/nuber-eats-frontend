@@ -35,6 +35,7 @@ export const EditProfile = () => {
       // update cache
       // back-end 에서 API를 기다리지 않고 즉시 업데이트
       await refetch();
+      // writeFragement가 좀 더 빠르다
     }
   };
 
