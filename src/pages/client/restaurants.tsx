@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 import React from "react";
+import { Restaurant } from "../../components/restaurant";
 import {
   restauarntsPageQuery,
   restauarntsPageQueryVariables,
@@ -78,16 +79,11 @@ export const Restaurants = () => {
           </div>
           <div className="grid mt-10 grid-cols-3 gap-x-5 gap-y-12">
             {data?.restaurants.results?.map((restaurant) => (
-              <div>
-                <div
-                  style={{ backgroundImage: `url(${restaurant.coverImage})` }}
-                  className="bg-red-500 py-28 bg-cover bg-center mb-3"
-                ></div>
-                <h3 className="text-xl font-bold">{restaurant.name}</h3>
-                <div className="border-t-2 mt-3 py-2 text-xs border-gray-300 opacity-50">
-                  {restaurant.category?.name}
-                </div>
-              </div>
+              <Restaurant
+                name={restaurant.name}
+                coverImg={restaurant.coverImage}
+                categoryName={restaurant.category?.name}
+              />
             ))}
           </div>
         </div>
@@ -95,28 +91,3 @@ export const Restaurants = () => {
     </div>
   );
 };
-
-/*
-import React from "react";
-import { useMe } from "../hooks/useMe";
-
-export const Category: React.FC = () => {
-  const { data } = useMe();
-
-  return (
-    <div className="flex justify-around max-w-md mx-auto">
-      {data?.allCategories.categories?.map((category) => (
-        <div className="flex flex-col items-center cursor-pointer group">
-          <div
-            className="w-16 h-16 rounded-full bg-cover group-hover:bg-red-300"
-            style={{ backgroundImage: `url(${category.coverImage})` }}
-          ></div>
-          <span className="text-sm text-center font-bold mt-5">
-            {category.name}
-          </span>
-        </div>
-      ))}
-    </div>
-  );
-};
-*/
