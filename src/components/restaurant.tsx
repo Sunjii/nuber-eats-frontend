@@ -1,6 +1,7 @@
 import React from "react";
 
 interface IRestaurantProps {
+  id: string;
   name: string;
   categoryName?: string;
   coverImg: string;

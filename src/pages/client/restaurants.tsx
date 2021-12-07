@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
-import React from "react";
+import React, { useState } from "react";
 import { Restaurant } from "../../components/restaurant";
 import {
   restauarntsPageQuery,
@@ -41,16 +41,21 @@ const RESTAURANTS_QUERY = gql`
 `;
 
 export const Restaurants = () => {
+  const [page, setPage] = useState(1);
   const { data, loading, error } = useQuery<
     restauarntsPageQuery,
     restauarntsPageQueryVariables
   >(RESTAURANTS_QUERY, {
     variables: {
       input: {
-        page: 1,
+        page,
       },
     },
   });
+
+  // Move to next page
+  const onNextPageClick = () => setPage((current) => current + 1);
+  const onPrevPageClick = () => setPage((current) => current - 1);
 
   console.log(data);
   return (
@@ -63,7 +68,7 @@ export const Restaurants = () => {
         />
       </form>
       {!loading && (
-        <div className="max-w-screen-xl mx-auto mt-10">
+        <div className="max-w-screen-xl mx-auto mt-10 pb-20">
           <div className="flex justify-around max-w-md mx-auto">
             {data?.allCategories.categories?.map((category) => (
               <div className="flex flex-col items-center cursor-pointer group">
@@ -80,11 +85,37 @@ export const Restaurants = () => {
           <div className="grid mt-10 grid-cols-3 gap-x-5 gap-y-12">
             {data?.restaurants.results?.map((restaurant) => (
               <Restaurant
+                id={restaurant.id + ""}
                 name={restaurant.name}
                 coverImg={restaurant.coverImage}
                 categoryName={restaurant.category?.name}
               />
             ))}
+          </div>
+          <div className="grid grid-cols-3 text-center max-w-md items-center mx-auto mt-10">
+            {page > 1 ? (
+              <button
+                onClick={onPrevPageClick}
+                className="focus:outline-none font-bold text-2xl"
+              >
+                &larr;
+              </button>
+            ) : (
+              <div></div>
+            )}
+            <span>
+              Page {page} of {data?.restaurants.totalPages}
+            </span>
+            {page !== data?.restaurants.totalPages ? (
+              <button
+                onClick={onNextPageClick}
+                className="focus:outline-none font-bold text-2xl"
+              >
+                &rarr;
+              </button>
+            ) : (
+              <div></div>
+            )}
           </div>
         </div>
       )}
