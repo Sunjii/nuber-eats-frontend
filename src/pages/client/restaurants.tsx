@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Restaurant } from "../../components/restaurant";
 import {
   restauarntsPageQuery,
@@ -40,6 +41,10 @@ const RESTAURANTS_QUERY = gql`
   }
 `;
 
+interface IFormProps {
+  searchTerm: string;
+}
+
 export const Restaurants = () => {
   const [page, setPage] = useState(1);
   const { data, loading, error } = useQuery<
@@ -56,12 +61,22 @@ export const Restaurants = () => {
   // Move to next page
   const onNextPageClick = () => setPage((current) => current + 1);
   const onPrevPageClick = () => setPage((current) => current - 1);
+  const { register, handleSubmit, getValues } = useForm<IFormProps>();
+  const onSearchSubmit = () => {
+    console.log(getValues());
+  };
 
-  console.log(data);
   return (
     <div>
-      <form className="bg-gray-800 w-full py-40 flex items-center justify-center">
+      <form
+        onSubmit={handleSubmit(onSearchSubmit)}
+        className="bg-gray-800 w-full py-40 flex items-center justify-center"
+      >
         <input
+          {...register("searchTerm", {
+            required: true,
+            min: 3,
+          })}
           type="Search"
           className="input rounded-md border-0 w-3/4 md:w-3/12"
           placeholder="Search Restaurants..."
@@ -71,7 +86,10 @@ export const Restaurants = () => {
         <div className="max-w-screen-xl mx-auto mt-10 pb-20">
           <div className="flex justify-around max-w-md mx-auto">
             {data?.allCategories.categories?.map((category) => (
-              <div className="flex flex-col items-center cursor-pointer group">
+              <div
+                key={category.id}
+                className="flex flex-col items-center cursor-pointer group"
+              >
                 <div
                   className="w-16 h-16 rounded-full bg-cover group-hover:bg-red-300"
                   style={{ backgroundImage: `url(${category.coverImage})` }}
@@ -85,6 +103,7 @@ export const Restaurants = () => {
           <div className="grid mt-10 md:grid-cols-3 gap-x-5 gap-y-12">
             {data?.restaurants.results?.map((restaurant) => (
               <Restaurant
+                key={restaurant.id}
                 id={restaurant.id + ""}
                 name={restaurant.name}
                 coverImg={restaurant.coverImage}
