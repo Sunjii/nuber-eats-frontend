@@ -2,6 +2,7 @@ import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router";
 import { Restaurant } from "../../components/restaurant";
 import {
   restauarntsPageQuery,
@@ -62,8 +63,13 @@ export const Restaurants = () => {
   const onNextPageClick = () => setPage((current) => current + 1);
   const onPrevPageClick = () => setPage((current) => current - 1);
   const { register, handleSubmit, getValues } = useForm<IFormProps>();
+  const history = useHistory();
   const onSearchSubmit = () => {
-    console.log(getValues());
+    const { searchTerm } = getValues();
+    history.push({
+      pathname: "/search",
+      search: `?term=${searchTerm}`,
+    });
   };
 
   return (
