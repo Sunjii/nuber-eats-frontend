@@ -63,7 +63,7 @@ export const Restaurants = () => {
       <form className="bg-gray-800 w-full py-40 flex items-center justify-center">
         <input
           type="Search"
-          className="input w-1/4 rounded-md border-0"
+          className="input rounded-md border-0 w-3/4 md:w-3/12"
           placeholder="Search Restaurants..."
         />
       </form>
@@ -82,7 +82,7 @@ export const Restaurants = () => {
               </div>
             ))}
           </div>
-          <div className="grid mt-10 grid-cols-3 gap-x-5 gap-y-12">
+          <div className="grid mt-10 md:grid-cols-3 gap-x-5 gap-y-12">
             {data?.restaurants.results?.map((restaurant) => (
               <Restaurant
                 id={restaurant.id + ""}
