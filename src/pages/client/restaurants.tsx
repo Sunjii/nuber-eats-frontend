@@ -64,9 +64,7 @@ export const Restaurants = () => {
     const { searchTerm } = getValues();
     history.push({
       pathname: "/search",
-      state: {
-        searchTerm,
-      },
+      search: `?term=${searchTerm}`,
     });
   };
 
