@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 import { Restaurant } from "../../components/restaurant";
 import { RESTAURANT_FRAGMENT } from "../../fragments";
 import {
@@ -91,18 +92,20 @@ export const Restaurants = () => {
         <div className="max-w-screen-xl mx-auto mt-10 pb-20">
           <div className="flex justify-around max-w-md mx-auto">
             {data?.allCategories.categories?.map((category) => (
-              <div
-                key={category.id}
-                className="flex flex-col items-center cursor-pointer group"
-              >
+              <Link to={`/category/${category.slug}`}>
                 <div
-                  className="w-16 h-16 rounded-full bg-cover group-hover:bg-red-300"
-                  style={{ backgroundImage: `url(${category.coverImage})` }}
-                ></div>
-                <span className="text-sm text-center font-bold mt-5">
-                  {category.name}
-                </span>
-              </div>
+                  key={category.id}
+                  className="flex flex-col items-center cursor-pointer group"
+                >
+                  <div
+                    className="w-16 h-16 rounded-full bg-cover group-hover:bg-red-300"
+                    style={{ backgroundImage: `url(${category.coverImage})` }}
+                  ></div>
+                  <span className="text-sm text-center font-bold mt-5">
+                    {category.name}
+                  </span>
+                </div>
+              </Link>
             ))}
           </div>
           <div className="grid mt-10 md:grid-cols-3 gap-x-5 gap-y-12">
