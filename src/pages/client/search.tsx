@@ -1,7 +1,7 @@
 import { gql, useLazyQuery } from "@apollo/client";
 import React, { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { useHistory, useLocation } from "react-router";
+import { useHistory, useLocation, useParams } from "react-router";
 import { RESTAURANT_FRAGMENT } from "../../fragments";
 import {
   searchRestaurant,
@@ -26,13 +26,14 @@ const SEARCH_RESTAURANT = gql`
 export const Search = () => {
   const location = useLocation();
   const history = useHistory();
+  let [_, query] = location.search.split("?term=");
+  query = decodeURI(query);
   const [callQuery, { loading, data, error, called }] = useLazyQuery<
     searchRestaurant,
     searchRestaurantVariables
   >(SEARCH_RESTAURANT);
 
   useEffect(() => {
-    const [_, query] = location.search.split("?term=");
     // replace page
     if (!query) {
       return history.replace("/");
@@ -49,11 +50,15 @@ export const Search = () => {
   }, [history, location]);
 
   console.log(loading, data, called);
+  console.log(query);
   return (
-    <h1>
+    <div>
       <Helmet>
         <title>Search | Nuber Eats</title>
       </Helmet>
-    </h1>
+      <div className="bg-gray-800 w-full py-40 flex items-center justify-center">
+        <h1 className="text-4xl text-center font-bold ">검색 결과 : {query}</h1>
+      </div>
+    </div>
   );
 };
