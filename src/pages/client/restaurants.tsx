@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { Restaurant } from "../../components/restaurant";
-import { RESTAURANT_FRAGMENT } from "../../fragments";
+import { CATEGORY_FRAGMENT, RESTAURANT_FRAGMENT } from "../../fragments";
 import {
   restauarntsPageQuery,
   restauarntsPageQueryVariables,
@@ -18,11 +18,7 @@ const RESTAURANTS_QUERY = gql`
       ok
       error
       categories {
-        id
-        name
-        coverImage
-        slug
-        restaurantCount
+        ...CategoryParts
       }
     }
 
@@ -37,6 +33,7 @@ const RESTAURANTS_QUERY = gql`
     }
   }
   ${RESTAURANT_FRAGMENT}
+  ${CATEGORY_FRAGMENT}
 `;
 
 interface IFormProps {
@@ -92,11 +89,8 @@ export const Restaurants = () => {
         <div className="max-w-screen-xl mx-auto mt-10 pb-20">
           <div className="flex justify-around max-w-md mx-auto">
             {data?.allCategories.categories?.map((category) => (
-              <Link to={`/category/${category.slug}`}>
-                <div
-                  key={category.id}
-                  className="flex flex-col items-center cursor-pointer group"
-                >
+              <Link key={category.id} to={`/category/${category.slug}`}>
+                <div className="flex flex-col items-center cursor-pointer group">
                   <div
                     className="w-16 h-16 rounded-full bg-cover group-hover:bg-red-300"
                     style={{ backgroundImage: `url(${category.coverImage})` }}
