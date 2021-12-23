@@ -8,6 +8,7 @@ import {
   searchRestaurant,
   searchRestaurantVariables,
 } from "../../__generated__/searchRestaurant";
+import { NotFound } from "../404";
 
 const SEARCH_RESTAURANT = gql`
   query searchRestaurant($input: SearchRestaurantInput!) {
@@ -29,7 +30,7 @@ export const Search = () => {
   const history = useHistory();
   let [_, query] = location.search.split("?term=");
   query = decodeURI(query);
-  const [callQuery, { loading, data, error, called }] = useLazyQuery<
+  const [callQuery, { loading, data, called }] = useLazyQuery<
     searchRestaurant,
     searchRestaurantVariables
   >(SEARCH_RESTAURANT);
@@ -50,19 +51,22 @@ export const Search = () => {
     });
   }, [history, location]);
 
-  console.log(loading, data, called);
-  console.log(query);
+  //console.log(data?.searchRestaurant.totalResults);
+
   return (
     <div>
       <Helmet>
         <title>Search | Nuber Eats</title>
       </Helmet>
       <div className="bg-gray-800 w-full py-40 flex items-center justify-center">
+        <h1 className="text-4xl text-center font-bold text-white hover:text-red-400">
+          "{query}"　
+        </h1>
         <h1 className="text-4xl text-center font-bold text-white">
-          검색 결과 : {query}
+          검색 결과 총 {data?.searchRestaurant.totalResults}건
         </h1>
       </div>
-      <div className="grid mt-10 md:grid-cols-3 gap-x-5 gap-y-12">
+      <div className="grid mt-10 md:grid-cols-1 gap-x-5 gap-y-12">
         {data?.searchRestaurant.searchingResults?.map((restaurant) => (
           <Restaurant
             key={restaurant.id}
@@ -72,6 +76,11 @@ export const Search = () => {
             categoryName={restaurant.category?.name}
           />
         ))}
+      </div>
+      <div>
+        {!data?.searchRestaurant.totalResults && (
+          <div>검색 결과가 없습니다</div>
+        )}
       </div>
     </div>
   );
