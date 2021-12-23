@@ -2,6 +2,7 @@ import { gql, useLazyQuery } from "@apollo/client";
 import React, { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useHistory, useLocation, useParams } from "react-router";
+import { Restaurant } from "../../components/restaurant";
 import { RESTAURANT_FRAGMENT } from "../../fragments";
 import {
   searchRestaurant,
@@ -57,7 +58,20 @@ export const Search = () => {
         <title>Search | Nuber Eats</title>
       </Helmet>
       <div className="bg-gray-800 w-full py-40 flex items-center justify-center">
-        <h1 className="text-4xl text-center font-bold ">검색 결과 : {query}</h1>
+        <h1 className="text-4xl text-center font-bold text-white">
+          검색 결과 : {query}
+        </h1>
+      </div>
+      <div className="grid mt-10 md:grid-cols-3 gap-x-5 gap-y-12">
+        {data?.searchRestaurant.searchingResults?.map((restaurant) => (
+          <Restaurant
+            key={restaurant.id}
+            id={restaurant.id + ""}
+            name={restaurant.name}
+            coverImg={restaurant.coverImage}
+            categoryName={restaurant.category?.name}
+          />
+        ))}
       </div>
     </div>
   );
