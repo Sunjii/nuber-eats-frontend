@@ -1,14 +1,13 @@
 import { gql, useLazyQuery } from "@apollo/client";
 import React, { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { useHistory, useLocation, useParams } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import { Restaurant } from "../../components/restaurant";
 import { RESTAURANT_FRAGMENT } from "../../fragments";
 import {
   searchRestaurant,
   searchRestaurantVariables,
 } from "../../__generated__/searchRestaurant";
-import { NotFound } from "../404";
 
 const SEARCH_RESTAURANT = gql`
   query searchRestaurant($input: SearchRestaurantInput!) {
@@ -37,7 +36,7 @@ export const Search = () => {
 
   useEffect(() => {
     // replace page
-    if (!query) {
+    if (!query || query === "undefined") {
       return history.replace("/");
     }
     // Lazy Query
