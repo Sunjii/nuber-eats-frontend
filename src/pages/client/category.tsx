@@ -1,5 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import React from "react";
+import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
 import { CATEGORY_FRAGMENT, RESTAURANT_FRAGMENT } from "../../fragments";
 import {
@@ -46,5 +47,24 @@ export const Category = () => {
 
   //console.log(data);
 
-  return <h1>Cat</h1>;
+  return (
+    <div>
+      <Helmet>
+        <title>Search | Nuber Eats</title>
+      </Helmet>
+      <div className="bg-gray-800 w-full py-40 flex items-center justify-center">
+        <div className="flex flex-col items-center cursor-pointer group">
+          <div
+            className="w-44 h-44 rounded-full bg-cover group-hover:bg-red-300"
+            style={{
+              backgroundImage: `url(${data?.categoryInfo.category?.coverImage})`,
+            }}
+          ></div>
+          <span className="mt-5 text-4xl text-center font-bold text-white hover:text-red-400">
+            {data?.categoryInfo.category?.name}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
 };
