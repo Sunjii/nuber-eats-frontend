@@ -94,5 +94,7 @@ describe("<Sign />", () => {
       },
     });
     expect(window.alert).toHaveBeenCalledWith("계정 생성 완료!");
+    const mutationError = getByRole("alert");
+    expect(mutationError).toHaveTextContent("mutation-error");
   });
 });
